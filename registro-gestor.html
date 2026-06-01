@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Regístrate como Gestor Inmobiliario Freelance en PNK Inmobiliaria y genera ingresos adicionales." />
+  <title>Registro Gestor Freelance – PNK Inmobiliaria</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="PNK Inmobiliaria – Ir al inicio">
+        <span class="logo__icon" aria-hidden="true">🏘️</span>
+        <span class="logo__text">
+          <span class="logo__name">PNK INMOBILIARIA</span>
+          <span class="logo__tagline">Región de Coquimbo</span>
+        </span>
+      </a>
+      <nav class="nav-actions" role="navigation" aria-label="Navegación principal">
+        <a href="registro-propietario.html" class="btn-nav">🏠 Registrar Propietario</a>
+        <a href="registro-gestor.html" class="btn-nav active" aria-current="page">🤝 Registrar Gestor Freelance</a>
+        <a href="contacto.html" class="btn-nav">✉️ Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Miga de pan">
+        <a href="index.html">Inicio</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Registro Gestor Freelance</span>
+      </nav>
+      <h1 id="page-title">🤝 Registrarme como GESTOR INMOBILIARIO FREE</h1>
+      <p>Capta propiedades, gestiona ventas y <strong>genera ingresos adicionales</strong> por comisión.</p>
+    </div>
+  </section>
+
+  <!-- STEPS INFO -->
+  <section style="background:#fff;padding:24px 0;border-bottom:1px solid var(--color-border)" aria-labelledby="steps-title">
+    <div class="container">
+      <h2 id="steps-title" class="sr-only">Pasos para convertirse en Gestor</h2>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center;justify-content:center">
+        <div style="text-align:center;flex:1;min-width:160px">
+          <div style="font-size:2rem;margin-bottom:6px" aria-hidden="true">1️⃣</div>
+          <strong style="font-size:.88rem;color:var(--color-primary)">Regístrate</strong>
+          <p style="font-size:.78rem;color:var(--color-text-muted);margin-top:3px">Completa el formulario</p>
+        </div>
+        <div style="font-size:1.5rem;color:var(--color-border)" aria-hidden="true">→</div>
+        <div style="text-align:center;flex:1;min-width:160px">
+          <div style="font-size:2rem;margin-bottom:6px" aria-hidden="true">2️⃣</div>
+          <strong style="font-size:.88rem;color:var(--color-primary)">Capta Propiedad</strong>
+          <p style="font-size:.78rem;color:var(--color-text-muted);margin-top:3px">Para la comunidad</p>
+        </div>
+        <div style="font-size:1.5rem;color:var(--color-border)" aria-hidden="true">→</div>
+        <div style="text-align:center;flex:1;min-width:160px">
+          <div style="font-size:2rem;margin-bottom:6px" aria-hidden="true">3️⃣</div>
+          <strong style="font-size:.88rem;color:var(--color-primary)">Obtén PENKA_ID</strong>
+          <p style="font-size:.78rem;color:var(--color-text-muted);margin-top:3px">Si eres aceptado</p>
+        </div>
+        <div style="font-size:1.5rem;color:var(--color-border)" aria-hidden="true">→</div>
+        <div style="text-align:center;flex:1;min-width:160px">
+          <div style="font-size:2rem;margin-bottom:6px" aria-hidden="true">💰</div>
+          <strong style="font-size:.88rem;color:var(--color-primary)">¡Comisiona!</strong>
+          <p style="font-size:.78rem;color:var(--color-text-muted);margin-top:3px">Por cada venta gestionada</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="form-page" id="main-content">
+    <div class="container">
+      <div class="form-card">
+        <header class="form-card__header">
+          <h2 class="form-card__title">Datos del Gestor Inmobiliario</h2>
+          <p class="form-card__sub">
+            Una vez enviado, el Administrador revisará sus antecedentes.
+            Si es aceptado, recibirá su <strong>PENKA_ID</strong> por correo electrónico.
+          </p>
+        </header>
+
+        <form action="index.html" method="get" novalidate aria-label="Formulario de registro de gestor inmobiliario freelance">
+
+          <div class="notice-box" role="note">
+            <strong>Requisito:</strong> Debe adjuntar un Certificado de Antecedentes vigente (emitido hace menos de 90 días).
+          </div>
+
+          <p class="form-section-title">Información Personal</p>
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="g-rut">RUT <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="text" id="g-rut" name="rut"
+                placeholder="Ej: 12.345.678-9"
+                aria-required="true"
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="g-sexo">Sexo <span class="req" aria-label="campo requerido">*</span></label>
+              <select id="g-sexo" name="sexo" aria-required="true">
+                <option value="">Seleccione...</option>
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+                <option value="O">Prefiero no indicar</option>
+              </select>
+            </div>
+
+            <div class="form-group form-full">
+              <label for="g-nombre">Nombre Completo <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="text" id="g-nombre" name="nombre"
+                placeholder="Apellido Paterno Apellido Materno Nombres"
+                autocomplete="name"
+                aria-required="true"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="g-fecha">Fecha de Nacimiento <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="date" id="g-fecha" name="fecha_nac"
+                aria-required="true"
+                max="2006-01-01"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="g-telefono">Teléfono Móvil <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="tel" id="g-telefono" name="telefono"
+                placeholder="+56 9 XXXX XXXX"
+                autocomplete="tel"
+                aria-required="true"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="g-email">Correo Electrónico <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="email" id="g-email" name="email"
+                placeholder="correo@ejemplo.cl"
+                autocomplete="email"
+                aria-required="true"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="g-confirm-email">Confirmar Correo <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="email" id="g-confirm-email" name="confirm_email"
+                placeholder="Repita su correo"
+                autocomplete="off"
+                aria-required="true"
+              />
+            </div>
+
+          </div>
+
+          <p class="form-section-title">Credenciales de Acceso</p>
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="g-pass">Contraseña <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="password" id="g-pass" name="password"
+                placeholder="Mínimo 8 caracteres"
+                autocomplete="new-password"
+                aria-required="true"
+                minlength="8"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="g-confirm-pass">Confirmar Contraseña <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="password" id="g-confirm-pass" name="confirm_password"
+                placeholder="Repita su contraseña"
+                autocomplete="new-password"
+                aria-required="true"
+              />
+            </div>
+
+          </div>
+
+          <p class="form-section-title">Documentación Requerida</p>
+          <div class="form-grid">
+
+            <div class="form-group form-full">
+              <label for="g-certificado">
+                Certificado de Antecedentes <span class="req" aria-label="campo requerido">*</span>
+              </label>
+              <input
+                type="file"
+                id="g-certificado"
+                name="certificado"
+                accept=".pdf,.jpg,.jpeg,.png"
+                aria-required="true"
+                aria-describedby="g-cert-help"
+              />
+              <small id="g-cert-help" style="color:var(--color-text-muted);font-size:.78rem">
+                Formatos aceptados: PDF, JPG, PNG. Tamaño máximo: 5 MB.
+                El certificado debe ser emitido hace menos de 90 días.
+              </small>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <a href="index.html" class="btn-secondary" aria-label="Cancelar y volver al inicio">
+              ← Cancelar
+            </a>
+            <button type="submit" class="btn-primary" aria-label="Enviar solicitud de registro como gestor">
+              Postular como Gestor Freelance
+            </button>
+          </div>
+
+        </form>
+
+        <p style="text-align:center;margin-top:18px;font-size:.85rem;color:var(--color-text-muted)">
+          ¿Ya tiene cuenta?
+          <a href="index.html" style="color:var(--color-primary);font-weight:600">
+            Ingrese aquí
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="index.html" class="footer-logo" aria-label="PNK Inmobiliaria – Inicio">
+          <span class="footer-logo__icon" aria-hidden="true">🏘️</span>
+          <span class="footer-logo__name">PNK INMOBILIARIA</span>
+        </a>
+        <nav class="footer-nav" aria-label="Navegación del pie de página">
+          <div class="footer-nav__links">
+            <a href="registro-propietario.html">Registro Propietario</a>
+            <span class="footer-nav__sep" aria-hidden="true">·</span>
+            <a href="registro-gestor.html">Registro Gestor</a>
+            <span class="footer-nav__sep" aria-hidden="true">·</span>
+            <a href="dashboard.html">Panel Admin</a>
+          </div>
+          <p class="footer-copy"><small>&copy; 2026 Todos los derechos Reservados PNK Inmobiliaria</small></p>
+        </nav>
+        <div class="footer-social" role="list" aria-label="Redes sociales">
+          <a href="#" class="social-btn" role="listitem" aria-label="Síguenos en LinkedIn" title="LinkedIn">
+            <img src="img\linkedin_logo_icon_147268.png" alt="" aria-hidden="true">
+          </a>
+          <a href="#" class="social-btn" role="listitem" aria-label="Síguenos en Instagram" title="Instagram">
+            <img src="img\1491580635-yumminkysocialmedia26_83102.png" alt="" aria-hidden="true">
+          </a>
+          </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver al inicio de la página">↑</button>
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+</body>
+</html>

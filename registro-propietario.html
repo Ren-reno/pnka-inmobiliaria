@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Registrarse como Propietario en PNK Inmobiliaria para publicar sus inmuebles." />
+  <title>Registro Propietario – PNK Inmobiliaria</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="PNK Inmobiliaria – Ir al inicio">
+        <span class="logo__icon" aria-hidden="true">🏘️</span>
+        <span class="logo__text">
+          <span class="logo__name">PNK INMOBILIARIA</span>
+          <span class="logo__tagline">Región de Coquimbo</span>
+        </span>
+      </a>
+      <nav class="nav-actions" role="navigation" aria-label="Navegación principal">
+        <a href="registro-propietario.html" class="btn-nav active" aria-current="page">🏠 Registrar Propietario</a>
+        <a href="registro-gestor.html" class="btn-nav">🤝 Registrar Gestor Freelance</a>
+        <a href="contacto.html" class="btn-nav">✉️ Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Miga de pan">
+        <a href="index.html">Inicio</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Registro Propietario</span>
+      </nav>
+      <h1 id="page-title">🏠 Registrarme como PROPIETARIO</h1>
+      <p>Complete el formulario para publicar sus inmuebles en nuestra plataforma.</p>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="form-page" id="main-content">
+    <div class="container">
+      <div class="form-card">
+        <header class="form-card__header">
+          <h2 class="form-card__title">Datos del Propietario</h2>
+          <p class="form-card__sub">
+            Su cuenta quedará en <strong>estado pendiente</strong> hasta que el Administrador la active
+            previa verificación de antecedentes. Recibirá un correo al completar el proceso.
+          </p>
+        </header>
+
+        <form action="index.html" method="get" novalidate aria-label="Formulario de registro de propietario">
+
+          <div class="notice-box" role="note">
+            <strong>Importante:</strong> Todos los campos marcados con <span style="color:var(--color-accent)">*</span>
+            son obligatorios. Su N° de propiedad debe coincidir con el registro del Servicio de Bienes Raíces.
+          </div>
+
+          <p class="form-section-title">Información Personal</p>
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="p-rut">RUT <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="text" id="p-rut" name="rut"
+                placeholder="Ej: 12.345.678-9"
+                autocomplete="off"
+                aria-required="true"
+                pattern="[0-9]{1,2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]{1}"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="p-sexo">Sexo <span class="req" aria-label="campo requerido">*</span></label>
+              <select id="p-sexo" name="sexo" aria-required="true">
+                <option value="">Seleccione...</option>
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+                <option value="O">Prefiero no indicar</option>
+              </select>
+            </div>
+
+            <div class="form-group form-full">
+              <label for="p-nombre">Nombre Completo <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="text" id="p-nombre" name="nombre"
+                placeholder="Apellido Paterno Apellido Materno Nombres"
+                autocomplete="name"
+                aria-required="true"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="p-fecha">Fecha de Nacimiento <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="date" id="p-fecha" name="fecha_nac"
+                aria-required="true"
+                max="2006-01-01"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="p-telefono">Teléfono Móvil <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="tel" id="p-telefono" name="telefono"
+                placeholder="+56 9 XXXX XXXX"
+                autocomplete="tel"
+                aria-required="true"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="p-email">Correo Electrónico <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="email" id="p-email" name="email"
+                placeholder="correo@ejemplo.cl"
+                autocomplete="email"
+                aria-required="true"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="p-confirm-email">Confirmar Correo <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="email" id="p-confirm-email" name="confirm_email"
+                placeholder="Repita su correo"
+                autocomplete="off"
+                aria-required="true"
+              />
+            </div>
+
+          </div>
+
+          <p class="form-section-title">Credenciales de Acceso</p>
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="p-pass">Contraseña <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="password" id="p-pass" name="password"
+                placeholder="Mínimo 8 caracteres"
+                autocomplete="new-password"
+                aria-required="true"
+                minlength="8"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="p-confirm-pass">Confirmar Contraseña <span class="req" aria-label="campo requerido">*</span></label>
+              <input type="password" id="p-confirm-pass" name="confirm_password"
+                placeholder="Repita su contraseña"
+                autocomplete="new-password"
+                aria-required="true"
+              />
+            </div>
+
+          </div>
+
+          <p class="form-section-title">Datos de la Propiedad</p>
+          <div class="form-grid">
+
+            <div class="form-group form-full">
+              <label for="p-nro-bien">
+                N° de Propiedad (Registro de Bienes Raíces)
+                <span class="req" aria-label="campo requerido">*</span>
+              </label>
+              <input type="text" id="p-nro-bien" name="nro_bienes_raices"
+                placeholder="Ej: 2026-BR-001234"
+                aria-required="true"
+                aria-describedby="p-nro-bien-help"
+              />
+              <small id="p-nro-bien-help" style="color:var(--color-text-muted);font-size:.78rem">
+                Este número debe coincidir con el registro oficial del Servicio de Bienes Raíces de Chile.
+              </small>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <a href="index.html" class="btn-secondary" aria-label="Cancelar y volver al inicio">
+              ← Cancelar
+            </a>
+            <button type="submit" class="btn-primary" aria-label="Enviar formulario de registro de propietario">
+              Registrarme como Propietario
+            </button>
+          </div>
+
+        </form>
+
+        <p style="text-align:center;margin-top:18px;font-size:.85rem;color:var(--color-text-muted)">
+          ¿Ya tiene cuenta?
+          <a href="index.html" style="color:var(--color-primary);font-weight:600">
+            Ingrese aquí
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="index.html" class="footer-logo" aria-label="PNK Inmobiliaria – Inicio">
+          <span class="footer-logo__icon" aria-hidden="true">🏘️</span>
+          <span class="footer-logo__name">PNK INMOBILIARIA</span>
+        </a>
+        <nav class="footer-nav" aria-label="Navegación del pie de página">
+          <div class="footer-nav__links">
+            <a href="registro-propietario.html">Registro Propietario</a>
+            <span class="footer-nav__sep" aria-hidden="true">·</span>
+            <a href="registro-gestor.html">Registro Gestor</a>
+            <span class="footer-nav__sep" aria-hidden="true">·</span>
+            <a href="dashboard.html">Panel Admin</a>
+          </div>
+          <p class="footer-copy"><small>&copy; 2026 Todos los derechos Reservados PNK Inmobiliaria</small></p>
+        </nav>
+        <div class="footer-social" role="list" aria-label="Redes sociales">
+          <a href="#" class="social-btn" role="listitem" aria-label="Síguenos en LinkedIn" title="LinkedIn">
+            <img src="img\linkedin_logo_icon_147268.png" alt="" aria-hidden="true">
+          </a>
+          <a href="#" class="social-btn" role="listitem" aria-label="Síguenos en Instagram" title="Instagram">
+            <img src="img\1491580635-yumminkysocialmedia26_83102.png" alt="" aria-hidden="true">
+          </a>
+          </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver al inicio de la página">↑</button>
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+</body>
+</html>

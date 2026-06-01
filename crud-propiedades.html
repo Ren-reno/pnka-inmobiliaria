@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Administración de propiedades publicadas en PNK Inmobiliaria." />
+  <title>Gestión de Propiedades – PNK Inmobiliaria</title>
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Leaflet CSS (OpenStreetMap – sin API key) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    /* ---- Wrapper del bloque mapa ---- */
+    .mapa-form-wrap {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+      margin-bottom: 6px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ---- Barra de búsqueda ---- */
+    .mapa-form-search {
+      padding: 14px 16px 10px;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .mapa-form-search__label {
+      display: block;
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 8px;
+    }
+
+    .mapa-form-search__row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .mapa-form-search__row input {
+      flex: 1;
+      padding: 9px 14px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: .88rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .mapa-form-search__row input:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(26,58,92,.08);
+    }
+
+    .mapa-form-search__btn {
+      padding: 9px 18px;
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .2s;
+    }
+
+    .mapa-form-search__btn:hover { background: var(--color-primary-lt); }
+    .mapa-form-search__btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .mapa-form-hint {
+      font-size: .76rem;
+      color: var(--color-text-muted);
+      margin-top: 6px;
+    }
+
+    /* ---- Canvas del mapa ---- */
+    #mapa-propiedad {
+      width: 100%;
+      height: 380px;
+      background: #d8e4ee;
+      position: relative;
+    }
+
+    /* ---- Fila de coordenadas capturadas ---- */
+    .mapa-form-coords {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(26,58,92,.04);
+      border-top: 1px solid var(--color-border);
+      font-size: .8rem;
+      color: var(--color-text-muted);
+      min-height: 38px;
+    }
+
+    .mapa-form-coords__icon { font-size: 1rem; flex-shrink: 0; }
+
+    #coords-display {
+      font-weight: 500;
+      color: var(--color-primary);
+      transition: color .3s;
+    }
+
+    .mapa-form-coords.confirmed #coords-display { color: var(--color-green, #27ae60); }
+
+    /* ---- Spinner de búsqueda ---- */
+    .buscando-msg {
+      font-size: .78rem;
+      color: var(--color-text-muted);
+      margin-top: 5px;
+      display: none;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 600px) {
+      #mapa-propiedad { height: 260px; }
+      .mapa-form-search__row { flex-direction: column; }
+      .mapa-form-search__btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="PNK Inmobiliaria – Ir al inicio">
+        <span class="logo__icon" aria-hidden="true">🏘️</span>
+        <span class="logo__text">
+          <span class="logo__name">PNK INMOBILIARIA</span>
+          <span class="logo__tagline">Panel de Administración</span>
+        </span>
+      </a>
+      <nav class="nav-actions" role="navigation" aria-label="Acciones de administrador">
+        <a href="crud-propiedades.html" class="btn-nav active" aria-current="page">🏠 Propiedades</a>
+        <a href="crud-usuarios.html" class="btn-nav">👥 Usuarios</a>
+        <a href="index.html" class="btn-nav btn-nav--filled">🚪 Cerrar Sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar" role="complementary" aria-label="Menú lateral">
+      <div class="sidebar-user">
+        <div class="sidebar-user__avatar" role="img" aria-label="Avatar del administrador">👤</div>
+        <div>
+          <p class="sidebar-user__name">Administrador</p>
+          <p class="sidebar-user__role">Admin Principal</p>
+        </div>
+      </div>
+      <nav aria-label="Navegación del panel">
+        <ul class="sidebar-nav">
+          <li><span class="sidebar-nav__section">Principal</span></li>
+          <li><a href="dashboard.html"><span class="icon" aria-hidden="true">📊</span> Dashboard</a></li>
+          <li><span class="sidebar-nav__section">Usuarios</span></li>
+          <li><a href="crud-usuarios.html"><span class="icon" aria-hidden="true">👥</span> Mantenedor de Usuarios</a></li>
+          <li><a href="registro-propietario.html"><span class="icon" aria-hidden="true">🏠</span> Nuevo Propietario</a></li>
+          <li><a href="registro-gestor.html"><span class="icon" aria-hidden="true">🤝</span> Nuevo Gestor</a></li>
+          <li><span class="sidebar-nav__section">Propiedades</span></li>
+          <li><a href="crud-propiedades.html" class="active" aria-current="page"><span class="icon" aria-hidden="true">🏘️</span> Mantenedor Propiedades</a></li>
+          <li><span class="sidebar-nav__section">Sitio</span></li>
+          <li><a href="index.html"><span class="icon" aria-hidden="true">🌐</span> Ver Sitio Público</a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-logout">
+        <a href="index.html" class="btn-logout" aria-label="Cerrar sesión">🚪 Cerrar Sesión</a>
+      </div>
+    </aside>
+
+    <main class="dashboard-content" id="main-content" aria-labelledby="crud-props-title">
+
+      <div class="dash-header">
+        <h1 class="dash-title" id="crud-props-title">🏘️ Gestión de Propiedades</h1>
+        <p class="dash-sub">Publique, edite y administre los avisos de inmuebles.</p>
+      </div>
+
+      <!-- Formulario nueva propiedad -->
+      <section aria-labelledby="nueva-prop-title" style="background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-md);padding:24px;margin-bottom:24px;box-shadow:var(--shadow-sm)">
+        <h2 id="nueva-prop-title" style="font-family:var(--font-display);font-size:1.1rem;color:var(--color-primary);margin-bottom:20px">
+          + Publicar Nuevo Inmueble
+        </h2>
+
+        <form action="#" method="get" novalidate aria-label="Formulario para publicar nuevo inmueble">
+
+          <p class="form-section-title" style="margin-top:0">Información General</p>
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="np-tipo">Tipo de Propiedad <span class="req" aria-label="requerido">*</span></label>
+              <select id="np-tipo" name="tipo" aria-required="true">
+                <option value="">Seleccione...</option>
+                <option value="casa">Casa</option>
+                <option value="departamento">Departamento</option>
+                <option value="terreno">Terreno</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="np-propietario">Propietario <span class="req" aria-label="requerido">*</span></label>
+              <select id="np-propietario" name="propietario_id" aria-required="true">
+                <option value="">Seleccione propietario...</option>
+                <option value="1">12.345.678-9 – Mariavictoria Freites</option>
+                <option value="2">15.678.901-K – Daniel Ruz</option>
+              </select>
+            </div>
+
+            <div class="form-group form-full">
+              <label for="np-desc">Descripción <span class="req" aria-label="requerido">*</span></label>
+              <textarea id="np-desc" name="descripcion" aria-required="true"
+                placeholder="Describa las características principales del inmueble..."></textarea>
+            </div>
+
+          </div>
+
+          <!-- ===== SECCIÓN UBICACIÓN + MAPA (OpenStreetMap / Leaflet) ===== -->
+          <p class="form-section-title">Ubicación</p>
+          <div class="form-grid form-grid--3">
+
+            <div class="form-group">
+              <label for="np-provincia">Provincia <span class="req" aria-label="requerido">*</span></label>
+              <select id="np-provincia" name="provincia" aria-required="true" onchange="actualizarMapaDesdeSelects()">
+                <option value="">Seleccione...</option>
+                <option value="Elqui">Elqui</option>
+                <option value="Limarí">Limarí</option>
+                <option value="Choapa">Choapa</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="np-comuna">Comuna <span class="req" aria-label="requerido">*</span></label>
+              <select id="np-comuna" name="comuna" aria-required="true" onchange="actualizarMapaDesdeSelects()">
+                <option value="">Seleccione...</option>
+                <option value="La Serena">La Serena</option>
+                <option value="Coquimbo">Coquimbo</option>
+                <option value="Ovalle">Ovalle</option>
+                <option value="Illapel">Illapel</option>
+                <option value="Andacollo">Andacollo</option>
+                <option value="Vicuña">Vicuña</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="np-sector">Sector <span class="req" aria-label="requerido">*</span></label>
+              <input type="text" id="np-sector" name="sector"
+                placeholder="Ej: El Milagro" aria-required="true" />
+            </div>
+
+            <div class="form-group form-full">
+              <label for="np-direccion">Dirección / Calle</label>
+              <input type="text" id="np-direccion" name="direccion"
+                placeholder="Ej: Av. del Mar 1234" />
+            </div>
+
+          </div>
+
+          <!-- Bloque mapa Leaflet / OpenStreetMap -->
+          <div class="mapa-form-wrap" role="region" aria-labelledby="mapa-form-label">
+
+            <div class="mapa-form-search">
+              <label for="mapa-buscar-input" id="mapa-form-label" class="mapa-form-search__label">
+                📍 Buscar y confirmar ubicación en el mapa
+                <span style="font-weight:400;color:var(--color-text-muted)"> — powered by OpenStreetMap (sin API key)</span>
+              </label>
+              <div class="mapa-form-search__row">
+                <input
+                  type="text"
+                  id="mapa-buscar-input"
+                  placeholder="Escribe una dirección, sector o ciudad y presiona Buscar…"
+                  autocomplete="off"
+                  aria-label="Campo de búsqueda de dirección"
+                  aria-describedby="mapa-hint"
+                />
+                <button type="button" id="mapa-buscar-btn"
+                  class="mapa-form-search__btn"
+                  onclick="buscarDireccion()"
+                  aria-label="Buscar dirección en el mapa">
+                  🔍 Buscar
+                </button>
+              </div>
+              <p id="mapa-hint" class="mapa-form-hint">
+                Haga clic en el mapa o arrastre el marcador 📌 para ajustar la ubicación exacta.
+              </p>
+              <p id="buscando-msg" class="buscando-msg" aria-live="polite">⏳ Buscando dirección…</p>
+            </div>
+
+            <!-- Mapa Leaflet -->
+            <div id="mapa-propiedad"
+                 role="application"
+                 aria-label="Mapa interactivo para seleccionar ubicación de la propiedad">
+            </div>
+
+            <!-- Coordenadas capturadas -->
+            <div class="mapa-form-coords" id="coords-row">
+              <span class="mapa-form-coords__icon" aria-hidden="true">📌</span>
+              <span id="coords-display" aria-live="polite" aria-atomic="true">
+                Sin ubicación seleccionada
+              </span>
+              <!-- Campos ocultos que se enviarán con el formulario -->
+              <input type="hidden" id="np-lat" name="latitud" />
+              <input type="hidden" id="np-lng" name="longitud" />
+            </div>
+
+          </div>
+          <!-- /bloque mapa -->
+
+          <p class="form-section-title">Características del Inmueble</p>
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="np-dormitorios">Cantidad de Dormitorios</label>
+              <input type="number" id="np-dormitorios" name="dormitorios" min="0" max="20" placeholder="Ej: 3" />
+            </div>
+
+            <div class="form-group">
+              <label for="np-baños">Cantidad de Baños</label>
+              <input type="number" id="np-baños" name="banos" min="0" max="10" placeholder="Ej: 2" />
+            </div>
+
+            <div class="form-group">
+              <label for="np-area-const">Área Construida (m²)</label>
+              <input type="number" id="np-area-const" name="area_construida" min="0" placeholder="Ej: 85" />
+            </div>
+
+            <div class="form-group">
+              <label for="np-area-terreno">Área Total del Terreno (m²)</label>
+              <input type="number" id="np-area-terreno" name="area_terreno" min="0" placeholder="Ej: 120" />
+            </div>
+
+            <div class="form-group">
+              <label for="np-precio-clp">Precio en CLP ($) <span class="req" aria-label="requerido">*</span></label>
+              <input type="number" id="np-precio-clp" name="precio_clp" min="0" placeholder="Ej: 154000000" aria-required="true" />
+            </div>
+
+            <div class="form-group">
+              <label for="np-precio-uf">Precio en UF <span class="req" aria-label="requerido">*</span></label>
+              <input type="number" id="np-precio-uf" name="precio_uf" min="0" step="0.01" placeholder="Ej: 5650" aria-required="true" />
+            </div>
+
+            <div class="form-group">
+              <label for="np-fecha-pub">Fecha de Publicación</label>
+              <input type="date" id="np-fecha-pub" name="fecha_publicacion" />
+            </div>
+
+            <div class="form-group">
+              <label for="np-fotos">Fotografías (máximo 10)</label>
+              <input type="file" id="np-fotos" name="fotografias" accept="image/*" multiple aria-describedby="np-fotos-help" />
+              <small id="np-fotos-help" style="color:var(--color-text-muted);font-size:.78rem">
+                Máximo 10 imágenes. Formatos: JPG, PNG, WEBP.
+              </small>
+            </div>
+
+          </div>
+
+          <p class="form-section-title">Equipamiento y Amenidades</p>
+          <div class="form-grid">
+            <div class="checkbox-group">
+              <span class="checkbox-group-label" id="amenidades-label">
+                Seleccione las amenidades disponibles:
+              </span>
+              <div class="checkbox-list" role="group" aria-labelledby="amenidades-label">
+                <label class="checkbox-item"><input type="checkbox" name="amenidades" value="bodega" /> 🏪 Bodega</label>
+                <label class="checkbox-item"><input type="checkbox" name="amenidades" value="estacionamiento" /> 🚗 Estacionamiento</label>
+                <label class="checkbox-item"><input type="checkbox" name="amenidades" value="logia" /> 🧺 Logia</label>
+                <label class="checkbox-item"><input type="checkbox" name="amenidades" value="cocina-amoblada" /> 🍳 Cocina amoblada</label>
+                <label class="checkbox-item"><input type="checkbox" name="amenidades" value="antejardin" /> 🌿 Antejardín</label>
+                <label class="checkbox-item"><input type="checkbox" name="amenidades" value="patio-trasero" /> 🌳 Patio trasero</label>
+                <label class="checkbox-item"><input type="checkbox" name="amenidades" value="piscina" /> 🏊 Piscina</label>
+              </div>
+            </div>
+
+            <div class="form-group form-full">
+              <label>¿Permitir solicitud de visita?</label>
+              <div class="radio-group-inline" role="group" aria-label="Permitir solicitar visita">
+                <label class="radio-item"><input type="radio" name="permite_visita" value="si" /> Sí</label>
+                <label class="radio-item"><input type="radio" name="permite_visita" value="no" checked /> No</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="reset" class="btn-secondary" aria-label="Limpiar formulario">🔄 Limpiar</button>
+            <button type="submit" class="btn-primary" aria-label="Publicar inmueble">📢 Publicar Inmueble</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Tabla propiedades -->
+      <section aria-labelledby="tbl-props-title">
+        <div class="table-card">
+          <div class="table-card__head">
+            <h2 class="table-card__title" id="tbl-props-title">Inmuebles Publicados</h2>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="data-table" aria-label="Listado de inmuebles publicados">
+              <thead>
+                <tr>
+                  <th scope="col">Código</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Ubicación</th>
+                  <th scope="col">Precio UF</th>
+                  <th scope="col">Precio CLP</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>C0125457</strong></td>
+                  <td><span class="badge badge--blue">Casa</span></td>
+                  <td>Sector El Milagro, La Serena</td>
+                  <td>UF 5.650</td>
+                  <td>$154.000.000</td>
+                  <td><span class="badge badge--green">Publicado</span></td>
+                  <td>
+                    <div class="table-actions">
+                      <a href="detalle-propiedad.html" class="btn-icon" title="Ver" aria-label="Ver C0125457">👁️</a>
+                      <button class="btn-icon" title="Editar" aria-label="Editar C0125457">✏️</button>
+                      <button class="btn-icon btn-icon--del" title="Eliminar" aria-label="Eliminar C0125457">🗑️</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>D0247812</strong></td>
+                  <td><span class="badge badge--blue">Depto</span></td>
+                  <td>Centro, Coquimbo</td>
+                  <td>UF 3.200</td>
+                  <td>$87.000.000</td>
+                  <td><span class="badge badge--green">Publicado</span></td>
+                  <td>
+                    <div class="table-actions">
+                      <a href="detalle-propiedad.html" class="btn-icon" title="Ver" aria-label="Ver D0247812">👁️</a>
+                      <button class="btn-icon" title="Editar" aria-label="Editar D0247812">✏️</button>
+                      <button class="btn-icon btn-icon--del" title="Eliminar" aria-label="Eliminar D0247812">🗑️</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>T0389345</strong></td>
+                  <td><span class="badge badge--blue">Terreno</span></td>
+                  <td>Peñuelas, Coquimbo</td>
+                  <td>UF 1.800</td>
+                  <td>$48.900.000</td>
+                  <td><span class="badge badge--yellow">Borrador</span></td>
+                  <td>
+                    <div class="table-actions">
+                      <a href="detalle-propiedad.html" class="btn-icon" title="Ver" aria-label="Ver T0389345">👁️</a>
+                      <button class="btn-icon" title="Editar" aria-label="Editar T0389345">✏️</button>
+                      <button class="btn-icon btn-icon--del" title="Eliminar" aria-label="Eliminar T0389345">🗑️</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Leaflet JS (sin API key, completamente gratis) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    /* ==============================================
+       MAPA CON LEAFLET + OPENSTREETMAP
+       Geocodificación con Nominatim (OSM, gratis)
+       ============================================== */
+
+    // Centro inicial: La Serena, Coquimbo
+    const LAT_INICIAL = -29.9027;
+    const LNG_INICIAL = -71.2519;
+    const ZOOM_CIUDAD = 12;
+    const ZOOM_CALLE  = 16;
+
+    // Inicializar mapa
+    const mapa = L.map('mapa-propiedad', {
+      center: [LAT_INICIAL, LNG_INICIAL],
+      zoom: ZOOM_CIUDAD,
+      zoomControl: true
+    });
+
+    // Capa de tiles OpenStreetMap (gratuita, sin key)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
+      maxZoom: 19
+    }).addTo(mapa);
+
+    // Icono personalizado del marcador (color del proyecto)
+    const iconoPersonalizado = L.divIcon({
+      className: '',
+      html: `<div style="
+        width:32px;height:32px;
+        background:var(--color-primary,#1a3a5c);
+        border:3px solid #fff;
+        border-radius:50% 50% 50% 0;
+        transform:rotate(-45deg);
+        box-shadow:0 2px 8px rgba(0,0,0,.35);
+      "></div>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -34]
+    });
+
+    // Marcador arrastrable
+    const marcador = L.marker([LAT_INICIAL, LNG_INICIAL], {
+      draggable: true,
+      icon: iconoPersonalizado,
+      title: 'Arrastra para ajustar la ubicación exacta'
+    }).addTo(mapa);
+
+    marcador.bindPopup('<strong>📍 Ubicación seleccionada</strong><br>Arrastra para ajustar.').openPopup();
+
+    // Al arrastrar el marcador
+    marcador.on('dragend', function () {
+      const pos = marcador.getLatLng();
+      geocodificacionInversa(pos.lat, pos.lng);
+    });
+
+    // Clic en el mapa mueve el marcador
+    mapa.on('click', function (e) {
+      marcador.setLatLng(e.latlng);
+      geocodificacionInversa(e.latlng.lat, e.latlng.lng);
+    });
+
+    /* ---- Guardar coordenadas en inputs ocultos ---- */
+    function guardarCoordenadas(lat, lng, etiqueta) {
+      document.getElementById('np-lat').value = lat.toFixed(6);
+      document.getElementById('np-lng').value = lng.toFixed(6);
+
+      const texto = etiqueta
+        ? etiqueta + ' (' + lat.toFixed(5) + ', ' + lng.toFixed(5) + ')'
+        : 'Lat: ' + lat.toFixed(5) + '  |  Lng: ' + lng.toFixed(5);
+
+      document.getElementById('coords-display').textContent = '✅ ' + texto;
+      document.getElementById('coords-row').classList.add('confirmed');
+    }
+
+    /* ---- Mover mapa y marcador a coordenadas dadas ---- */
+    function moverA(lat, lng, zoom, etiqueta) {
+      mapa.flyTo([lat, lng], zoom || ZOOM_CALLE, { duration: 1 });
+      marcador.setLatLng([lat, lng]);
+      if (etiqueta) marcador.bindPopup('<strong>📍</strong> ' + etiqueta).openPopup();
+      guardarCoordenadas(lat, lng, etiqueta);
+    }
+
+    /* ---- Geocodificación inversa: coordenadas → dirección ---- */
+    function geocodificacionInversa(lat, lng) {
+      const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=es`;
+      fetch(url, { headers: { 'Accept-Language': 'es' } })
+        .then(r => r.json())
+        .then(data => {
+          const dir = data.display_name || ('Lat: ' + lat.toFixed(5) + ', Lng: ' + lng.toFixed(5));
+          guardarCoordenadas(lat, lng, dir);
+          document.getElementById('mapa-buscar-input').value = dir;
+          marcador.bindPopup('<strong>📍</strong> ' + dir).openPopup();
+        })
+        .catch(() => guardarCoordenadas(lat, lng));
+    }
+
+    /* ---- Geocodificación directa: texto → coordenadas ---- */
+    function buscarDireccion() {
+      const query = document.getElementById('mapa-buscar-input').value.trim();
+      if (!query) { alert('Ingrese una dirección para buscar.'); return; }
+
+      const btn = document.getElementById('mapa-buscar-btn');
+      const msg = document.getElementById('buscando-msg');
+      btn.disabled = true;
+      msg.style.display = 'block';
+
+      // Nominatim: API REST de OSM, completamente gratuita
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ', Chile')}&format=json&limit=1&accept-language=es&countrycodes=cl`;
+
+      fetch(url, { headers: { 'Accept-Language': 'es' } })
+        .then(r => r.json())
+        .then(results => {
+          btn.disabled = false;
+          msg.style.display = 'none';
+          if (results && results.length > 0) {
+            const { lat, lon, display_name } = results[0];
+            moverA(parseFloat(lat), parseFloat(lon), ZOOM_CALLE, display_name);
+            document.getElementById('mapa-buscar-input').value = display_name;
+          } else {
+            alert('No se encontró la dirección "' + query + '".\nIntente con más detalle, ej: "Av. del Mar 1234, La Serena".');
+          }
+        })
+        .catch(() => {
+          btn.disabled = false;
+          msg.style.display = 'none';
+          alert('Error de conexión al buscar la dirección. Verifique su conexión a internet.');
+        });
+    }
+
+    /* ---- Actualizar mapa al cambiar los selects de ubicación ---- */
+    let timerSelects = null;
+    function actualizarMapaDesdeSelects() {
+      clearTimeout(timerSelects);
+      timerSelects = setTimeout(() => {
+        const comuna   = document.getElementById('np-comuna').value;
+        const sector   = document.getElementById('np-sector').value.trim();
+        const dir      = document.getElementById('np-direccion').value.trim();
+        if (!comuna) return;
+
+        let query = dir ? dir + ', ' + comuna
+                  : sector ? sector + ', ' + comuna
+                  : comuna;
+        query += ', Región de Coquimbo, Chile';
+
+        document.getElementById('mapa-buscar-input').value = query;
+        buscarDireccionSilenciosa(query);
+      }, 600); // debounce 600ms
+    }
+
+    function buscarDireccionSilenciosa(query) {
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1&accept-language=es&countrycodes=cl`;
+      fetch(url, { headers: { 'Accept-Language': 'es' } })
+        .then(r => r.json())
+        .then(results => {
+          if (results && results.length > 0) {
+            const { lat, lon, display_name } = results[0];
+            moverA(parseFloat(lat), parseFloat(lon), ZOOM_CALLE, display_name);
+          }
+        })
+        .catch(() => {}); // silencioso
+    }
+
+    /* ---- Enter en el buscador ---- */
+    document.getElementById('mapa-buscar-input').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); buscarDireccion(); }
+    });
+
+    /* ---- Sector también dispara actualización ---- */
+    document.getElementById('np-sector').addEventListener('input', actualizarMapaDesdeSelects);
+    document.getElementById('np-direccion').addEventListener('input', actualizarMapaDesdeSelects);
+  </script>
+
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Listado de todas las propiedades disponibles en la Región de Coquimbo – PNK Inmobiliaria." />
+  <title>Propiedades – PNK Inmobiliaria</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Estilos extra para la página de listado */
+    .listado-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      padding: 40px 0 64px;
+      align-items: start;
+    }
+
+    /* Panel de filtros lateral */
+    .filtros-panel {
+      background: var(--color-card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-sm);
+      padding: 24px;
+      position: sticky;
+      top: calc(var(--header-h) + 16px);
+    }
+
+    .filtros-panel__title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: var(--color-primary);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    .filtro-group {
+      margin-bottom: 18px;
+    }
+
+    .filtro-group label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+    }
+
+    .filtro-group select,
+    .filtro-group input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: .88rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .filtro-group select:focus,
+    .filtro-group input:focus { border-color: var(--color-primary); }
+
+    .filtro-range {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .filtro-range input {
+      padding: 8px 10px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: .85rem;
+      outline: none;
+      transition: border-color .2s;
+      width: 100%;
+    }
+
+    .filtro-range input:focus { border-color: var(--color-primary); }
+
+    .filtro-tipo-btns {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filtro-tipo-btn {
+      padding: 5px 12px;
+      border: 1.5px solid var(--color-border);
+      border-radius: 20px;
+      background: #fff;
+      font-family: var(--font-body);
+      font-size: .82rem;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+
+    .filtro-tipo-btn.active,
+    .filtro-tipo-btn:hover {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+
+    .btn-aplicar-filtros {
+      width: 100%;
+      padding: 10px;
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+      margin-top: 6px;
+    }
+
+    .btn-aplicar-filtros:hover { background: var(--color-primary-lt); }
+
+    .btn-limpiar-filtros {
+      width: 100%;
+      padding: 8px;
+      background: transparent;
+      color: var(--color-text-muted);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: .85rem;
+      cursor: pointer;
+      transition: border-color .2s;
+      margin-top: 8px;
+    }
+
+    .btn-limpiar-filtros:hover { border-color: var(--color-text-muted); }
+
+    /* Resultados */
+    .resultados-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .resultados-count {
+      font-size: .9rem;
+      color: var(--color-text-muted);
+    }
+
+    .resultados-count strong {
+      color: var(--color-primary);
+      font-size: 1rem;
+    }
+
+    .resultados-sort {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .85rem;
+      color: var(--color-text-muted);
+    }
+
+    .resultados-sort select {
+      padding: 6px 28px 6px 10px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: .85rem;
+      outline: none;
+    }
+
+    /* Grid propiedades listado */
+    .listado-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    /* Paginación */
+    .paginacion {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+    }
+
+    .paginacion__btn {
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      font-family: var(--font-body);
+      font-size: .88rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+
+    .paginacion__btn:hover,
+    .paginacion__btn.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+
+    @media(max-width:900px) {
+      .listado-layout { grid-template-columns: 1fr; }
+      .filtros-panel { position: static; }
+      .listado-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media(max-width:560px) {
+      .listado-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="PNK Inmobiliaria – Ir al inicio">
+        <span class="logo__icon" aria-hidden="true">🏘️</span>
+        <span class="logo__text">
+          <span class="logo__name">PNK INMOBILIARIA</span>
+          <span class="logo__tagline">Región de Coquimbo</span>
+        </span>
+      </a>
+      <nav class="nav-actions" role="navigation" aria-label="Navegación principal">
+        <a href="registro-propietario.html" class="btn-nav">🏠 Registrar Propietario</a>
+        <a href="registro-gestor.html" class="btn-nav">🤝 Registrar Gestor Freelance</a>
+        <a href="contacto.html" class="btn-nav">✉️ Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BUSCADOR BAR -->
+  <section class="buscador-section" aria-label="Buscador de propiedades">
+    <div class="container">
+      <div class="buscador-inner">
+        <span class="buscador-label" aria-hidden="true">🔍 Filtrar</span>
+        <div class="buscador-selects" role="group" aria-label="Filtros rápidos">
+          <label for="sl-comuna" class="sr-only">Seleccionar Comuna</label>
+          <select id="sl-comuna" name="comuna" aria-label="Filtrar por Comuna">
+            <option value="">-- Comuna --</option>
+            <option value="la-serena" selected>La Serena</option>
+            <option value="coquimbo">Coquimbo</option>
+            <option value="ovalle">Ovalle</option>
+            <option value="illapel">Illapel</option>
+          </select>
+
+          <label for="sl-provincia" class="sr-only">Seleccionar Provincia</label>
+          <select id="sl-provincia" name="provincia" aria-label="Filtrar por Provincia">
+            <option value="">-- Provincia --</option>
+            <option value="elqui" selected>Elqui</option>
+            <option value="limari">Limarí</option>
+            <option value="choapa">Choapa</option>
+          </select>
+
+          <label for="sl-sector" class="sr-only">Seleccionar Sector</label>
+          <select id="sl-sector" name="sector" aria-label="Filtrar por Sector">
+            <option value="">-- Sector --</option>
+            <option value="el-milagro">El Milagro</option>
+            <option value="centro">Centro</option>
+            <option value="las-companias">Las Compañías</option>
+          </select>
+        </div>
+        <button class="btn-buscar" type="button" aria-label="Buscar propiedades">🔍 Buscar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE HERO -->
+  <div style="background:var(--color-bg);padding:24px 0 0" aria-hidden="true">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Miga de pan" style="color:var(--color-text-muted)">
+        <a href="index.html" style="color:var(--color-primary)">Inicio</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Propiedades</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main id="main-content">
+    <div class="container">
+      <div class="listado-layout">
+
+        <!-- Panel filtros lateral -->
+        <aside aria-label="Panel de filtros avanzados">
+          <div class="filtros-panel">
+            <h2 class="filtros-panel__title">🎛️ Filtros Avanzados</h2>
+
+            <form aria-label="Filtros de búsqueda de propiedades" novalidate>
+
+              <div class="filtro-group">
+                <label for="f-tipo-prop">Tipo de Propiedad</label>
+                <div class="filtro-tipo-btns" role="group" aria-label="Filtrar por tipo de propiedad">
+                  <button type="button" class="filtro-tipo-btn active" aria-pressed="true">Todas</button>
+                  <button type="button" class="filtro-tipo-btn" aria-pressed="false">🏠 Casas</button>
+                  <button type="button" class="filtro-tipo-btn" aria-pressed="false">🏢 Deptos</button>
+                  <button type="button" class="filtro-tipo-btn" aria-pressed="false">🌿 Terrenos</button>
+                </div>
+              </div>
+
+              <div class="filtro-group">
+                <label for="f-precio-min">Rango de Precio (UF)</label>
+                <div class="filtro-range">
+                  <input type="number" id="f-precio-min" name="precio_min" placeholder="Mín" min="0" aria-label="Precio mínimo en UF" />
+                  <input type="number" id="f-precio-max" name="precio_max" placeholder="Máx" min="0" aria-label="Precio máximo en UF" />
+                </div>
+              </div>
+
+              <div class="filtro-group">
+                <label for="f-dormitorios">Dormitorios</label>
+                <select id="f-dormitorios" name="dormitorios" aria-label="Filtrar por cantidad de dormitorios">
+                  <option value="">Cualquier cantidad</option>
+                  <option value="1">1 dormitorio</option>
+                  <option value="2">2 dormitorios</option>
+                  <option value="3">3 dormitorios</option>
+                  <option value="4">4+ dormitorios</option>
+                </select>
+              </div>
+
+              <div class="filtro-group">
+                <label for="f-banos">Baños</label>
+                <select id="f-banos" name="banos" aria-label="Filtrar por cantidad de baños">
+                  <option value="">Cualquier cantidad</option>
+                  <option value="1">1 baño</option>
+                  <option value="2">2 baños</option>
+                  <option value="3">3+ baños</option>
+                </select>
+              </div>
+
+              <fieldset style="border:none;padding:0;margin:0 0 18px">
+                <legend style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--color-text-muted);margin-bottom:8px">
+                  Amenidades
+                </legend>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <label class="checkbox-item" style="font-size:.85rem">
+                    <input type="checkbox" name="amenidad" value="estacionamiento" />
+                    🚗 Estacionamiento
+                  </label>
+                  <label class="checkbox-item" style="font-size:.85rem">
+                    <input type="checkbox" name="amenidad" value="piscina" />
+                    🏊 Piscina
+                  </label>
+                  <label class="checkbox-item" style="font-size:.85rem">
+                    <input type="checkbox" name="amenidad" value="bodega" />
+                    🏪 Bodega
+                  </label>
+                  <label class="checkbox-item" style="font-size:.85rem">
+                    <input type="checkbox" name="amenidad" value="cocina-amoblada" />
+                    🍳 Cocina amoblada
+                  </label>
+                  <label class="checkbox-item" style="font-size:.85rem">
+                    <input type="checkbox" name="amenidad" value="patio-trasero" />
+                    🌳 Patio trasero
+                  </label>
+                </div>
+              </fieldset>
+
+              <button type="submit" class="btn-aplicar-filtros" aria-label="Aplicar filtros de búsqueda">
+                🔍 Aplicar Filtros
+              </button>
+              <button type="reset" class="btn-limpiar-filtros" aria-label="Limpiar todos los filtros">
+                Limpiar filtros
+              </button>
+
+            </form>
+          </div>
+        </aside>
+
+        <!-- Resultados -->
+        <section aria-labelledby="results-title">
+
+          <div class="resultados-header">
+            <div>
+              <h1 style="font-family:var(--font-display);font-size:1.4rem;color:var(--color-primary);margin-bottom:4px" id="results-title">
+                Propiedades en La Serena
+              </h1>
+              <p class="resultados-count">
+                Mostrando <strong>6</strong> de 24 resultados
+              </p>
+            </div>
+            <div class="resultados-sort">
+              <label for="sort-by">Ordenar:</label>
+              <select id="sort-by" name="orden" aria-label="Ordenar resultados">
+                <option value="reciente">Más recientes</option>
+                <option value="precio-asc">Precio: menor a mayor</option>
+                <option value="precio-desc">Precio: mayor a menor</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="listado-grid" role="list" aria-label="Listado de propiedades encontradas">
+
+            <!-- Card 1 -->
+            <article class="prop-card" role="listitem" aria-label="Casa en El Milagro, La Serena – UF 5.650">
+              <div class="prop-card__img-wrap">
+                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80"
+                  alt="Casa familiar en Sector El Milagro, La Serena" loading="lazy" width="600" height="190" />
+                <span class="prop-card__badge" aria-hidden="true">Casa</span>
+              </div>
+              <div class="prop-card__body">
+                <p class="prop-card__tipo" aria-hidden="true">Casa</p>
+                <p class="prop-card__location">Sector El Milagro, La Serena</p>
+                <p style="font-size:.78rem;color:var(--color-text-muted);margin-bottom:6px">
+                  Cód: C0125457 · 3 dorm · 2 baños · 95 m²
+                </p>
+                <div class="prop-card__price-row">
+                  <div class="prop-card__uf" aria-label="Precio: 5.650 UF">
+                    <strong>UF 5.650</strong><br>$154.000.000
+                  </div>
+                  <a href="detalle-propiedad.html" class="btn-ver-mas" aria-label="Ver más detalles de casa en El Milagro">
+                    Quiero saber más
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="prop-card" role="listitem" aria-label="Departamento en Centro, La Serena – UF 3.200">
+              <div class="prop-card__img-wrap">
+                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80"
+                  alt="Departamento moderno en el Centro de La Serena" loading="lazy" width="600" height="190" />
+                <span class="prop-card__badge" aria-hidden="true">Depto</span>
+              </div>
+              <div class="prop-card__body">
+                <p class="prop-card__tipo" aria-hidden="true">Departamento</p>
+                <p class="prop-card__location">Centro, La Serena</p>
+                <p style="font-size:.78rem;color:var(--color-text-muted);margin-bottom:6px">
+                  Cód: D0247812 · 2 dorm · 1 baño · 60 m²
+                </p>
+                <div class="prop-card__price-row">
+                  <div class="prop-card__uf" aria-label="Precio: 3.200 UF">
+                    <strong>UF 3.200</strong><br>$87.040.000
+                  </div>
+                  <a href="detalle-propiedad.html" class="btn-ver-mas" aria-label="Ver más detalles del departamento en Centro">
+                    Quiero saber más
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="prop-card" role="listitem" aria-label="Terreno en Las Compañías, La Serena – UF 1.800">
+              <div class="prop-card__img-wrap">
+                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80"
+                  alt="Terreno plano en Las Compañías, La Serena" loading="lazy" width="600" height="190" />
+                <span class="prop-card__badge" aria-hidden="true">Terreno</span>
+              </div>
+              <div class="prop-card__body">
+                <p class="prop-card__tipo" aria-hidden="true">Terreno</p>
+                <p class="prop-card__location">Las Compañías, La Serena</p>
+                <p style="font-size:.78rem;color:var(--color-text-muted);margin-bottom:6px">
+                  Cód: T0389345 · 300 m² total
+                </p>
+                <div class="prop-card__price-row">
+                  <div class="prop-card__uf" aria-label="Precio: 1.800 UF">
+                    <strong>UF 1.800</strong><br>$48.960.000
+                  </div>
+                  <a href="detalle-propiedad.html" class="btn-ver-mas" aria-label="Ver más detalles del terreno en Las Compañías">
+                    Quiero saber más
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 4 -->
+            <article class="prop-card" role="listitem" aria-label="Casa en Peñuelas, La Serena – UF 4.500">
+              <div class="prop-card__img-wrap">
+                <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=600&q=80"
+                  alt="Casa con jardín en Peñuelas, La Serena" loading="lazy" width="600" height="190" />
+                <span class="prop-card__badge" aria-hidden="true">Casa</span>
+              </div>
+              <div class="prop-card__body">
+                <p class="prop-card__tipo" aria-hidden="true">Casa</p>
+                <p class="prop-card__location">Peñuelas, La Serena</p>
+                <p style="font-size:.78rem;color:var(--color-text-muted);margin-bottom:6px">
+                  Cód: C0412567 · 4 dorm · 3 baños · 130 m²
+                </p>
+                <div class="prop-card__price-row">
+                  <div class="prop-card__uf" aria-label="Precio: 4.500 UF">
+                    <strong>UF 4.500</strong><br>$122.400.000
+                  </div>
+                  <a href="detalle-propiedad.html" class="btn-ver-mas" aria-label="Ver más detalles de casa en Peñuelas">
+                    Quiero saber más
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 5 -->
+            <article class="prop-card" role="listitem" aria-label="Departamento en Regimiento, La Serena – UF 2.800">
+              <div class="prop-card__img-wrap">
+                <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80"
+                  alt="Departamento amoblado en sector Regimiento, La Serena" loading="lazy" width="600" height="190" />
+                <span class="prop-card__badge" aria-hidden="true">Depto</span>
+              </div>
+              <div class="prop-card__body">
+                <p class="prop-card__tipo" aria-hidden="true">Departamento</p>
+                <p class="prop-card__location">Regimiento, La Serena</p>
+                <p style="font-size:.78rem;color:var(--color-text-muted);margin-bottom:6px">
+                  Cód: D0537890 · 2 dorm · 2 baños · 70 m²
+                </p>
+                <div class="prop-card__price-row">
+                  <div class="prop-card__uf" aria-label="Precio: 2.800 UF">
+                    <strong>UF 2.800</strong><br>$76.160.000
+                  </div>
+                  <a href="detalle-propiedad.html" class="btn-ver-mas" aria-label="Ver más detalles del departamento en Regimiento">
+                    Quiero saber más
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 6 -->
+            <article class="prop-card" role="listitem" aria-label="Casa en La Florida, La Serena – UF 6.200">
+              <div class="prop-card__img-wrap">
+                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80"
+                  alt="Casa amplia con piscina en La Florida, La Serena" loading="lazy" width="600" height="190" />
+                <span class="prop-card__badge" aria-hidden="true">Casa</span>
+              </div>
+              <div class="prop-card__body">
+                <p class="prop-card__tipo" aria-hidden="true">Casa</p>
+                <p class="prop-card__location">La Florida, La Serena</p>
+                <p style="font-size:.78rem;color:var(--color-text-muted);margin-bottom:6px">
+                  Cód: C0648123 · 4 dorm · 3 baños · 180 m²
+                </p>
+                <div class="prop-card__price-row">
+                  <div class="prop-card__uf" aria-label="Precio: 6.200 UF">
+                    <strong>UF 6.200</strong><br>$168.624.000
+                  </div>
+                  <a href="detalle-propiedad.html" class="btn-ver-mas" aria-label="Ver más detalles de casa en La Florida">
+                    Quiero saber más
+                  </a>
+                </div>
+              </div>
+            </article>
+
+          </div><!-- /listado-grid -->
+
+          <!-- Paginación -->
+          <nav class="paginacion" aria-label="Paginación de resultados">
+            <button class="paginacion__btn" aria-label="Página anterior" disabled>‹</button>
+            <button class="paginacion__btn active" aria-label="Página 1, página actual" aria-current="page">1</button>
+            <button class="paginacion__btn" aria-label="Ir a página 2">2</button>
+            <button class="paginacion__btn" aria-label="Ir a página 3">3</button>
+            <button class="paginacion__btn" aria-label="Ir a página 4">4</button>
+            <button class="paginacion__btn" aria-label="Página siguiente">›</button>
+          </nav>
+
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="index.html" class="footer-logo" aria-label="PNK Inmobiliaria – Inicio">
+          <span class="footer-logo__icon" aria-hidden="true">🏘️</span>
+          <span class="footer-logo__name">PNK INMOBILIARIA</span>
+        </a>
+        <nav class="footer-nav" aria-label="Navegación del pie de página">
+          <div class="footer-nav__links">
+            <a href="registro-propietario.html">Registro Propietario</a>
+            <span class="footer-nav__sep" aria-hidden="true">·</span>
+            <a href="registro-gestor.html">Registro Gestor</a>
+            <span class="footer-nav__sep" aria-hidden="true">·</span>
+            <a href="dashboard.html">Panel Admin</a>
+          </div>
+          <p class="footer-copy"><small>&copy; 2026 Todos los derechos Reservados PNK Inmobiliaria</small></p>
+        </nav>
+        <div class="footer-social" role="list" aria-label="Redes sociales">
+          <a href="#" class="social-btn" role="listitem" aria-label="Síguenos en LinkedIn" title="LinkedIn">
+            <img src="img\linkedin_logo_icon_147268.png" alt="" aria-hidden="true">
+          </a>
+          <a href="#" class="social-btn" role="listitem" aria-label="Síguenos en Instagram" title="Instagram">
+            <img src="img\1491580635-yumminkysocialmedia26_83102.png" alt="" aria-hidden="true">
+          </a>
+          </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver al inicio de la página">↑</button>
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+</body>
+</html>

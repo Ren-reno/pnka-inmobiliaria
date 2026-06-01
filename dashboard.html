@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Panel de administración de PNK Inmobiliaria." />
+  <title>Dashboard – PNK Inmobiliaria</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="PNK Inmobiliaria – Ir al inicio">
+        <span class="logo__icon" aria-hidden="true">🏘️</span>
+        <span class="logo__text">
+          <span class="logo__name">PNK INMOBILIARIA</span>
+          <span class="logo__tagline">Panel de Administración</span>
+        </span>
+      </a>
+      <nav class="nav-actions" role="navigation" aria-label="Acciones de administrador">
+        <a href="crud-propiedades.html" class="btn-nav">🏠 Propiedades</a>
+        <a href="crud-usuarios.html" class="btn-nav">👥 Usuarios</a>
+        <a href="index.html" class="btn-nav btn-nav--filled">🚪 Cerrar Sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- DASHBOARD LAYOUT -->
+  <div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar" role="complementary" aria-label="Menú lateral del administrador">
+
+      <div class="sidebar-user">
+        <div class="sidebar-user__avatar" role="img" aria-label="Avatar del administrador">👤</div>
+        <div>
+          <p class="sidebar-user__name">Administrador</p>
+          <p class="sidebar-user__role">Admin Principal</p>
+        </div>
+      </div>
+
+      <nav aria-label="Navegación del panel de administración">
+        <ul class="sidebar-nav">
+
+          <li aria-label="Sección Principal"><span class="sidebar-nav__section">Principal</span></li>
+          <li>
+            <a href="dashboard.html" class="active" aria-current="page">
+              <span class="icon" aria-hidden="true">📊</span> Dashboard
+            </a>
+          </li>
+
+          <li aria-label="Sección Usuarios"><span class="sidebar-nav__section">Usuarios</span></li>
+          <li>
+            <a href="crud-usuarios.html" aria-label="Mantenedor de usuarios">
+              <span class="icon" aria-hidden="true">👥</span> Mantenedor de Usuarios
+            </a>
+          </li>
+          <li>
+            <a href="registro-propietario.html" aria-label="Registrar nuevo propietario">
+              <span class="icon" aria-hidden="true">🏠</span> Nuevo Propietario
+            </a>
+          </li>
+          <li>
+            <a href="registro-gestor.html" aria-label="Registrar nuevo gestor">
+              <span class="icon" aria-hidden="true">🤝</span> Nuevo Gestor
+            </a>
+          </li>
+
+          <li aria-label="Sección Propiedades"><span class="sidebar-nav__section">Propiedades</span></li>
+          <li>
+            <a href="crud-propiedades.html" aria-label="Mantenedor de propiedades">
+              <span class="icon" aria-hidden="true">🏘️</span> Mantenedor Propiedades
+            </a>
+          </li>
+
+          <li aria-label="Sección Sitio"><span class="sidebar-nav__section">Sitio</span></li>
+          <li>
+            <a href="index.html" aria-label="Ir al sitio público">
+              <span class="icon" aria-hidden="true">🌐</span> Ver Sitio Público
+            </a>
+          </li>
+          <li>
+            <a href="contacto.html" aria-label="Ir a contacto">
+              <span class="icon" aria-hidden="true">✉️</span> Contacto
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-logout">
+        <a href="index.html" class="btn-logout" aria-label="Cerrar sesión y volver al inicio">
+          <span aria-hidden="true">🚪</span> Cerrar Sesión
+        </a>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="dashboard-content" id="main-content" aria-labelledby="dash-title">
+
+      <div class="dash-header">
+        <h1 class="dash-title" id="dash-title">Bienvenido, Administrador</h1>
+        <p class="dash-sub">Panel de Control PNK Inmobiliaria · <time datetime="2026-01-15">15 de enero, 2026</time></p>
+      </div>
+
+      <!-- Stats -->
+      <section aria-labelledby="stats-title">
+        <h2 id="stats-title" class="sr-only">Estadísticas del sistema</h2>
+        <div class="stats-grid">
+
+          <div class="stat-card" role="article" aria-label="Propiedades activas: 48">
+            <div class="stat-card__icon stat-card__icon--blue" aria-hidden="true">🏘️</div>
+            <div>
+              <p class="stat-card__num">48</p>
+              <p class="stat-card__label">Propiedades Activas</p>
+            </div>
+          </div>
+
+          <div class="stat-card" role="article" aria-label="Propietarios registrados: 32">
+            <div class="stat-card__icon stat-card__icon--green" aria-hidden="true">🏠</div>
+            <div>
+              <p class="stat-card__num">32</p>
+              <p class="stat-card__label">Propietarios</p>
+            </div>
+          </div>
+
+          <div class="stat-card" role="article" aria-label="Gestores activos: 15">
+            <div class="stat-card__icon stat-card__icon--gold" aria-hidden="true">🤝</div>
+            <div>
+              <p class="stat-card__num">15</p>
+              <p class="stat-card__label">Gestores Activos</p>
+            </div>
+          </div>
+
+          <div class="stat-card" role="article" aria-label="Cuentas pendientes de aprobación: 7">
+            <div class="stat-card__icon stat-card__icon--red" aria-hidden="true">⏳</div>
+            <div>
+              <p class="stat-card__num">7</p>
+              <p class="stat-card__label">Cuentas Pendientes</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Módulos rápidos -->
+      <section aria-labelledby="modules-title">
+        <h2 id="modules-title" style="font-family:var(--font-display);color:var(--color-primary);font-size:1.15rem;margin-bottom:16px">
+          Acceso Rápido
+        </h2>
+        <div class="dash-cards">
+
+          <a href="crud-usuarios.html" class="dash-module-card" aria-label="Ir al Mantenedor de Usuarios">
+            <span class="dash-module-card__icon" aria-hidden="true">👥</span>
+            <p class="dash-module-card__label">Mantenedor de Usuarios</p>
+            <p class="dash-module-card__desc">Gestionar propietarios y gestores</p>
+          </a>
+
+          <a href="crud-propiedades.html" class="dash-module-card" aria-label="Ir al Mantenedor de Propiedades">
+            <span class="dash-module-card__icon" aria-hidden="true">🏘️</span>
+            <p class="dash-module-card__label">Mantenedor de Propiedades</p>
+            <p class="dash-module-card__desc">Publicar, editar y eliminar avisos</p>
+          </a>
+
+          <a href="registro-propietario.html" class="dash-module-card" aria-label="Ir a Nuevo Propietario">
+            <span class="dash-module-card__icon" aria-hidden="true">🏠</span>
+            <p class="dash-module-card__label">Nuevo Propietario</p>
+            <p class="dash-module-card__desc">Registrar dueño de inmueble</p>
+          </a>
+
+          <a href="registro-gestor.html" class="dash-module-card" aria-label="Ir a Nuevo Gestor">
+            <span class="dash-module-card__icon" aria-hidden="true">🤝</span>
+            <p class="dash-module-card__label">Nuevo Gestor Freelance</p>
+            <p class="dash-module-card__desc">Habilitar gestor inmobiliario</p>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- Tabla reciente -->
+      <section style="margin-top:36px" aria-labelledby="recent-title">
+        <div class="table-card">
+          <div class="table-card__head">
+            <h2 class="table-card__title" id="recent-title">Cuentas Pendientes de Activación</h2>
+            <div class="table-card__actions">
+              <a href="crud-usuarios.html" class="btn-add" aria-label="Ver todos los usuarios">
+                Ver Todos
+              </a>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto">
+            <table class="data-table" aria-label="Tabla de cuentas pendientes de activación">
+              <thead>
+                <tr>
+                  <th scope="col">RUT</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Fecha Solicitud</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>12.345.678-9</td>
+                  <td>Mariavictoria Freites Ayala</td>
+                  <td>Propietario</td>
+                  <td><time datetime="2026-01-10">10/01/2026</time></td>
+                  <td><span class="badge badge--yellow">Pendiente</span></td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn-icon" title="Activar cuenta" aria-label="Activar cuenta de Mariavictoria Freites">✅</button>
+                      <button class="btn-icon btn-icon--del" title="Rechazar" aria-label="Rechazar solicitud de Mariavictoria Freites">❌</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>9.876.543-2</td>
+                  <td>Javier Eduardo Ahumada Cortés</td>
+                  <td>Gestor</td>
+                  <td><time datetime="2026-01-12">12/01/2026</time></td>
+                  <td><span class="badge badge--yellow">Pendiente</span></td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn-icon" title="Activar cuenta" aria-label="Activar cuenta de Javier Ahumada">✅</button>
+                      <button class="btn-icon btn-icon--del" title="Rechazar" aria-label="Rechazar solicitud de Javier Ahumada">❌</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>15.678.901-K</td>
+                  <td>Daniel Alejandro Ruz Moreno</td>
+                  <td>Propietario</td>
+                  <td><time datetime="2026-01-14">14/01/2026</time></td>
+                  <td><span class="badge badge--yellow">Pendiente</span></td>
+                  <td>
+                    <div class="table-actions">
+                      <button class="btn-icon" title="Activar cuenta" aria-label="Activar cuenta de Daniel Ruz">✅</button>
+                      <button class="btn-icon btn-icon--del" title="Rechazar" aria-label="Rechazar solicitud de Daniel Ruz">❌</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div><!-- /dashboard-layout -->
+
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+</body>
+</html>

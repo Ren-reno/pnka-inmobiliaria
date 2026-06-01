@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contáctanos para más información sobre propiedades en PNK Inmobiliaria." />
+  <title>Contacto – PNK Inmobiliaria</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="PNK Inmobiliaria – Ir al inicio">
+        <span class="logo__icon" aria-hidden="true">🏘️</span>
+        <span class="logo__text">
+          <span class="logo__name">PNK INMOBILIARIA</span>
+          <span class="logo__tagline">Región de Coquimbo</span>
+        </span>
+      </a>
+      <nav class="nav-actions" role="navigation" aria-label="Navegación principal">
+        <a href="registro-propietario.html" class="btn-nav">🏠 Registrar Propietario</a>
+        <a href="registro-gestor.html" class="btn-nav">🤝 Registrar Gestor Freelance</a>
+        <a href="contacto.html" class="btn-nav active" aria-current="page">✉️ Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Miga de pan">
+        <a href="index.html">Inicio</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Contacto</span>
+      </nav>
+      <h1 id="page-title">✉️ Contáctenos</h1>
+      <p>Estamos disponibles para responder todas sus consultas sobre propiedades.</p>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main id="main-content">
+    <div class="container">
+      <div class="contacto-grid">
+
+        <!-- Info de contacto -->
+        <section aria-labelledby="info-title">
+          <h2 id="info-title" class="sr-only">Información de contacto</h2>
+
+          <h2 style="font-family:var(--font-display);font-size:1.7rem;color:var(--color-primary);margin-bottom:14px">
+            ¿Tiene alguna pregunta?
+          </h2>
+          <p style="color:var(--color-text-muted);margin-bottom:28px;line-height:1.8;font-size:.92rem">
+            Nuestro equipo está disponible de lunes a viernes de 9:00 a 18:00 hrs para orientarle
+            sobre propiedades disponibles, proceso de registro o cualquier consulta relacionada con
+            nuestra plataforma.
+          </p>
+
+          <div class="contacto-datos" role="list" aria-label="Datos de contacto">
+
+            <div class="contacto-dato" role="listitem">
+              <div class="contacto-dato__icon" aria-hidden="true">📍</div>
+              <div>
+                <p class="contacto-dato__label">Dirección</p>
+                <p class="contacto-dato__value">Av. Francisco de Aguirre 389, La Serena, Región de Coquimbo</p>
+              </div>
+            </div>
+
+            <div class="contacto-dato" role="listitem">
+              <div class="contacto-dato__icon" aria-hidden="true">📞</div>
+              <div>
+                <p class="contacto-dato__label">Teléfono</p>
+                <p class="contacto-dato__value">
+                  <a href="tel:+5651200000" style="color:var(--color-primary);font-weight:500">(51) 255 3500</a>
+                </p>
+              </div>
+            </div>
+
+            <div class="contacto-dato" role="listitem">
+              <div class="contacto-dato__icon" aria-hidden="true">📱</div>
+              <div>
+                <p class="contacto-dato__label">WhatsApp</p>
+                <p class="contacto-dato__value">
+                  <a href="https://wa.me/56912345678" style="color:var(--color-primary);font-weight:500" target="_blank" rel="noopener noreferrer">+56 9 1234 5678</a>
+                </p>
+              </div>
+            </div>
+
+            <div class="contacto-dato" role="listitem">
+              <div class="contacto-dato__icon" aria-hidden="true">✉️</div>
+              <div>
+                <p class="contacto-dato__label">Correo Electrónico</p>
+                <p class="contacto-dato__value">
+                  <a href="mailto:contacto@pnkinmobiliaria.cl" style="color:var(--color-primary);font-weight:500">contacto@pnkinmobiliaria.cl</a>
+                </p>
+              </div>
+            </div>
+
+            <div class="contacto-dato" role="listitem">
+              <div class="contacto-dato__icon" aria-hidden="true">🕐</div>
+              <div>
+                <p class="contacto-dato__label">Horario de Atención</p>
+                <p class="contacto-dato__value">
+                  Lunes a Viernes: 09:00 – 18:00 hrs<br>
+                  Sábados: 10:00 – 14:00 hrs
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Mapa placeholder -->
+          <div class="mapa-placeholder" style="margin-top:28px" role="img" aria-label="Mapa de ubicación de la oficina en La Serena">
+            <span aria-hidden="true">🗺️</span>
+            <p>Nuestra Oficina – La Serena</p>
+            <small style="color:var(--color-text-muted)">(Integración con Google Maps API)</small>
+          </div>
+
+        </section>
+
+        <!-- Formulario de contacto -->
+        <section aria-labelledby="form-title">
+          <div class="form-card" style="margin:0">
+            <header class="form-card__header">
+              <h2 class="form-card__title" id="form-title">Envíenos un Mensaje</h2>
+              <p class="form-card__sub">Le responderemos a la brevedad posible.</p>
+            </header>
+
+            <form action="#" method="post" novalidate aria-label="Formulario de contacto">
+
+              <div class="form-grid">
+
+                <div class="form-group form-full">
+                  <label for="c-nombre">Nombre Completo <span class="req" aria-label="campo requerido">*</span></label>
+                  <input
+                    type="text"
+                    id="c-nombre"
+                    name="nombre"
+                    placeholder="Su nombre y apellidos"
+                    autocomplete="name"
+                    aria-required="true"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="c-email">Correo Electrónico <span class="req" aria-label="campo requerido">*</span></label>
+                  <input
+                    type="email"
+                    id="c-email"
+                    name="email"
+                    placeholder="correo@ejemplo.cl"
+                    autocomplete="email"
+                    aria-required="true"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="c-telefono">Teléfono</label>
+                  <input
+                    type="tel"
+                    id="c-telefono"
+                    name="telefono"
+                    placeholder="+56 9 XXXX XXXX"
+                    autocomplete="tel"
+                  />
+                </div>
+
+                <div class="form-group form-full">
+                  <label for="c-asunto">Asunto <span class="req" aria-label="campo requerido">*</span></label>
+                  <select id="c-asunto" name="asunto" aria-required="true">
+                    <option value="">Seleccione el motivo de contacto...</option>
+                    <option value="info-propiedad">Información sobre propiedad</option>
+                    <option value="registro-prop">Registro como Propietario</option>
+                    <option value="registro-gestor">Registro como Gestor Freelance</option>
+                    <option value="visita">Solicitar visita</option>
+                    <option value="otro">Otro</option>
+                  </select>
+                </div>
+
+                <div class="form-group form-full">
+                  <label for="c-mensaje">Mensaje <span class="req" aria-label="campo requerido">*</span></label>
+                  <textarea
+                    id="c-mensaje"
+                    name="mensaje"
+                    placeholder="Escriba su consulta aquí..."
+                    aria-required="true"
+                    style="min-height:130px"
+                  ></textarea>
+                </div>
+
+                <div class="form-group form-full">
+                  <label class="checkbox-item" style="font-size:.84rem">
+                    <input type="checkbox" name="acepta_politica" aria-required="true" />
+                    Acepto la
+                    <a href="#" style="color:var(--color-primary);text-decoration:underline">Política de Privacidad</a>
+                    y el tratamiento de mis datos personales.
+                  </label>
+                </div>
+
+              </div>
+
+              <div class="form-actions">
+                <button type="reset" class="btn-secondary" aria-label="Limpiar formulario de contacto">
+                  🔄 Limpiar
+                </button>
+                <button type="submit" class="btn-primary" aria-label="Enviar mensaje de contacto">
+                  ✈️ Enviar Mensaje
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="index.html" class="footer-logo" aria-label="PNK Inmobiliaria – Inicio">
+          <span class="footer-logo__icon" aria-hidden="true">🏘️</span>
+          <span class="footer-logo__name">PNK INMOBILIARIA</span>
+        </a>
+        <nav class="footer-nav" aria-label="Navegación del pie de página">
+          <div class="footer-nav__links">
+            <a href="registro-propietario.html">Registro Propietario</a>
+            <span class="footer-nav__sep" aria-hidden="true">·</span>
+            <a href="registro-gestor.html">Registro Gestor</a>
+            <span class="footer-nav__sep" aria-hidden="true">·</span>
+            <a href="dashboard.html">Panel Admin</a>
+          </div>
+          <p class="footer-copy"><small>&copy; 2026 Todos los derechos Reservados PNK Inmobiliaria</small></p>
+        </nav>
+        <div class="footer-social" role="list" aria-label="Redes sociales">
+          <a href="#" class="social-btn" role="listitem" aria-label="Síguenos en LinkedIn" title="LinkedIn">
+            <img src="img\linkedin_logo_icon_147268.png" alt="" aria-hidden="true">
+          </a>
+          <a href="#" class="social-btn" role="listitem" aria-label="Síguenos en Instagram" title="Instagram">
+            <img src="img\1491580635-yumminkysocialmedia26_83102.png" alt="" aria-hidden="true">
+          </a>
+          </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver al inicio de la página">↑</button>
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+</body>
+</html>
