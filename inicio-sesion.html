@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Inicia sesión en PNK Inmobiliaria para acceder a tu cuenta." />
+  <title>Iniciar Sesión – PNK Inmobiliaria</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="login-body">
+
+  <!-- HEADER -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="PNK Inmobiliaria – Ir al inicio">
+        <span class="logo__icon" aria-hidden="true">🏘️</span>
+        <span class="logo__text">
+          <span class="logo__name">PNK INMOBILIARIA</span>
+          <span class="logo__tagline">Región de Coquimbo</span>
+        </span>
+      </a>
+
+      <!-- Hamburguesa -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+
+      <nav class="nav-actions" id="nav-menu" role="navigation" aria-label="Navegación principal">
+        <a href="registro-propietario.html" class="btn-nav">🏠 Registrar Propietario</a>
+        <a href="registro-gestor.html"      class="btn-nav">🤝 Registrar Gestor Freelance</a>
+        <a href="contacto.html"             class="btn-nav">✉️ Contacto</a>
+        <a href="inicio-sesion.html"        class="btn-nav btn-nav--filled active" aria-current="page">🔐 Iniciar Sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="login-main" id="main-content">
+
+    <!-- Panel izquierdo: imagen/branding -->
+    <div class="login-brand" aria-hidden="true">
+      <div class="login-brand__overlay"></div>
+      <div class="login-brand__content">
+        <span class="login-brand__icon">🏘️</span>
+        <h1 class="login-brand__name">PNK INMOBILIARIA</h1>
+        <p class="login-brand__tagline">Tu hogar ideal en la Región de Coquimbo</p>
+        <div class="login-brand__stats">
+          <div class="login-brand__stat">
+            <strong>+48</strong>
+            <span>Propiedades</span>
+          </div>
+          <div class="login-brand__stat">
+            <strong>+32</strong>
+            <span>Propietarios</span>
+          </div>
+          <div class="login-brand__stat">
+            <strong>+15</strong>
+            <span>Gestores</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel derecho: formulario -->
+    <div class="login-panel">
+      <div class="login-card">
+
+        <!-- Ícono candado -->
+        <div class="login-card__icon" aria-hidden="true">🔐</div>
+
+        <h2 class="login-card__title">Bienvenido de vuelta</h2>
+        <p class="login-card__sub">Ingresa tus credenciales para acceder a tu cuenta</p>
+
+        <form action="dashboard.html" method="get" novalidate aria-label="Formulario de inicio de sesión" class="login-form">
+
+          <div class="login-field">
+            <label for="usuario">Usuario</label>
+            <div class="login-field__wrap">
+              <span class="login-field__icon" aria-hidden="true">👤</span>
+              <input
+                type="text"
+                id="usuario"
+                name="usuario"
+                placeholder="Ingrese su usuario o RUT"
+                autocomplete="username"
+                aria-required="true"
+              />
+            </div>
+          </div>
+
+          <div class="login-field">
+            <label for="contrasena">Contraseña</label>
+            <div class="login-field__wrap">
+              <span class="login-field__icon" aria-hidden="true">🔒</span>
+              <input
+                type="password"
+                id="contrasena"
+                name="contrasena"
+                placeholder="Ingrese su contraseña"
+                autocomplete="current-password"
+                aria-required="true"
+              />
+              <button type="button" class="login-field__toggle"
+                aria-label="Mostrar u ocultar contraseña"
+                onclick="togglePass(this)">👁️</button>
+            </div>
+          </div>
+
+          <div class="login-options">
+            <label class="login-remember">
+              <input type="checkbox" name="recordar" />
+              Recordarme
+            </label>
+            <a href="recuperar.html" class="login-forgot" aria-label="Recuperar contraseña olvidada">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
+
+          <button type="submit" class="btn-login" aria-label="Iniciar sesión en la plataforma">
+            Ingresar →
+          </button>
+
+        </form>
+
+        <!-- Separador -->
+        <div class="login-sep" aria-hidden="true"><span>¿No tienes cuenta?</span></div>
+
+        <!-- Registros -->
+        <div class="login-register-btns">
+          <a href="registro-propietario.html" class="btn-register-type" aria-label="Registrarse como propietario">
+            <span aria-hidden="true">🏠</span>
+            <div>
+              <strong>Soy Propietario</strong>
+              <small>Publico mi inmueble</small>
+            </div>
+          </a>
+          <a href="registro-gestor.html" class="btn-register-type" aria-label="Registrarse como gestor freelance">
+            <span aria-hidden="true">🤝</span>
+            <div>
+              <strong>Soy Gestor</strong>
+              <small>Quiero comisionar</small>
+            </div>
+          </a>
+        </div>
+
+        <p class="login-back">
+          <a href="index.html" aria-label="Volver al inicio">← Volver al inicio</a>
+        </p>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Mostrar/ocultar contraseña
+    function togglePass(btn) {
+      const input = btn.previousElementSibling;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+        btn.setAttribute('aria-label', 'Ocultar contraseña');
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+        btn.setAttribute('aria-label', 'Mostrar contraseña');
+      }
+    }
+
+    // Menú hamburguesa
+    const toggle = document.getElementById('nav-toggle');
+    const menu   = document.getElementById('nav-menu');
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      toggle.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', open);
+    });
+  </script>
+
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+</body>
+</html>
